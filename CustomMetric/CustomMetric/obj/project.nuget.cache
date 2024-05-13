@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "B/z2G05Xo/UWXvyWymI0je+v2/x4eoulp4DEpwT+97QP+LwcJz1K7ctF4sZyHZYqmdPC64Apt7i36PgkAVXkuw==",
+  "success": true,
+  "projectFilePath": "/Users/anaclaramuller/Documents/GitHub/metrics-dotnet-studies/CustomMetric/CustomMetric/CustomMetric.csproj",
+  "expectedPackageFiles": [
+    "/Users/anaclaramuller/.nuget/packages/system.diagnostics.diagnosticsource/8.0.1/system.diagnostics.diagnosticsource.8.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
