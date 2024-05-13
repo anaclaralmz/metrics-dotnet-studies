@@ -1,17 +1,17 @@
 # Coleta de métricas com .NET
-## Tecnologias
-- .NET;
-- IDE JetBrains Rider;
-## Conceitos aprendidos
-- Importancia das métricas
-- Métricas personalizadas
-- Instrumentação de métricas
+Contexto deste projeto: Gerenciamento das vendas de uma loja de chapéus - HatCo
+## Tecnologias utilizadas
+- .NET
+- IDE JetBrains Rider
+## Conceitos aprendidos nesse tutorial
+- Importância da coleta de métricas
+- Instrumentação de métricas com dotnet counters
 - Injeção de dependencias
-## 1. Passo a passo: Criar métrica personalizada
+
+## 1. Criar métrica personalizada
 Pré-requisitos: 
   - IDE para desenvolvimento em .NET
   - SDK do .NET Core 6 ou uma versão posterior
-Contexto: projeto de venda de chapéus.
 ### 1. Criar console app
 - Criar console app através da IDE utilizada
 - Fazer referência ao pacote NuGet System.Diagnostics.DiagnosticSource no Project
@@ -34,20 +34,36 @@ Contexto: projeto de venda de chapéus.
 ![console-app](assets/img4.png)
 ![console-app](assets/img5.png)
 
-## 2. Obter um Medidor por meio da injeção de dependência
-1. Criar Web App
+## 2. Obter um Medidor por meio de Injeção de dependências
+Neste exemplo, o objetivo é fazer a coleta da mesma métrica do [ex 1](#1-criar-métrica-personalizada), mas de uma forma mais otimizada, através de injeção de dependencia. Dessa forma, o medidor será tratado como um serviço isolado, facilitando, por exemplo, a realização de testes e de manutenção de código.
+### 1. Primeiro, vamos criar um novo Web App no Rider:
 ![console-app](assets/img6.png)
 ![console-app](assets/img7.png)
-2. Definir um tipo para armazenar os instrumentos e registrar o tipo com o contêiner de DI
-![console-app](assets/img8.png)
-3. Criar classe HatCoMetrics pra fazer a coleta da metrica (com o Counter, igual no exemplo 1) de quantidade de chapeus vendidos.
+### 2. Criar classe HatCoMetrics com 0 Counter
+- Criar classe HatCoMetrics pra fazer a coleta da metrica (com o Counter, igual no exemplo 1) de quantidade de chapeus vendidos.
 ![console-app](assets/img9.png)
-4. Rodar a aplicação e acessar no navegador
+### 3. Setup do Program.cs
+- Definir um tipo para armazenar os instrumentos
+![console-app](assets/img8.png)
+- Registrar o tipo com o contêiner de injeção de dependencia:
+-     var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddSingleton<HatCoMetrics>();
+- Expor a contagem de chapéus vendidos com um método POST, que poderia ser utilizado integrado a um site de vendas, por exemplo, que vai atualizando a quantidade de itens vendidos a cada compra:
+-     app.MapPost("/complete-sale", ([FromBody] SaleModel model, HatCoMetrics metrics) =>
+        {
+            metrics.HatsSold(model.QuantitySold);
+        })
+        .WithName("CreateCompleteSale")
+        .WithOpenApi();
+### 4. Rodar a aplicação com "dotnet run":
 ![console-app](assets/img10.png)
+### 5. Acessar a aplicação em "http://localhost:5252", em um navegador:
 ![console-app](assets/img11.png)
-5. Fazer todo o setut do dotnet-counters (igual no exemplo 1)
+### 5. Acessar o contador
+- Fazer todo o setup do dotnet-counters (igual no [exemplo 1](#3-exibir-a-nova-métrica))
+- Acessar o contador definido, através do terminal
 ![console-app](assets/img12.png)
-7. Testar adicionar 1 chapeu ao contador pelo swagger
+### 7. Testar adicionar 1 chapeu ao contador pelo swagger
 ![console-app](assets/img13.png)
 
 -> chapeu adicionado ao contador com sucesso:
