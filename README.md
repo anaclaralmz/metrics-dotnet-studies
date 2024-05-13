@@ -6,6 +6,7 @@
 - Importancia das métricas
 - Métricas personalizadas
 - Instrumentação de métricas
+- Injeção de dependencias
 ## 1. Passo a passo: Criar métrica personalizada
 Pré-requisitos: 
   - IDE para desenvolvimento em .NET
@@ -29,9 +30,26 @@ Contexto: projeto de venda de chapéus.
 -     > dotnet run
 - Utilizar contadores de dotnet para monitorar o novo contador:
 -     > dotnet-counters monitor -n CustomMetric --counters HatCo.Store
--> É esperado que sejam adicionados 4 chapéus por segundo no contador, e ele vai incrementando automaticamente. Ou seja, é simulado que estivessems endo vendidos 4 chapeus por segundo.
+-> É esperado que sejam adicionados 4 chapéus por segundo no contador, e ele vai incrementando automaticamente. Ou seja, é simulado que estivessem sendo vendidos 4 chapeus por segundo.
 ![console-app](assets/img4.png)
 ![console-app](assets/img5.png)
 
-
 ## 2. Obter um Medidor por meio da injeção de dependência
+1. Criar Web App
+![console-app](assets/img6.png)
+![console-app](assets/img7.png)
+2. Definir um tipo para armazenar os instrumentos e registrar o tipo com o contêiner de DI
+![console-app](assets/img8.png)
+3. Criar classe HatCoMetrics pra fazer a coleta da metrica (com o Counter, igual no exemplo 1) de quantidade de chapeus vendidos.
+![console-app](assets/img9.png)
+4. Rodar a aplicação e acessar no navegador
+![console-app](assets/img10.png)
+![console-app](assets/img11.png)
+5. Fazer todo o setut do dotnet-counters (igual no exemplo 1)
+![console-app](assets/img12.png)
+7. Testar adicionar 1 chapeu ao contador pelo swagger
+![console-app](assets/img13.png)
+
+-> chapeu adicionado ao contador com sucesso:
+
+![console-app](assets/img14.png)
