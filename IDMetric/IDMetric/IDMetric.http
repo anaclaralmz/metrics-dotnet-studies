@@ -1,0 +1,6 @@
+@IDMetric_HostAddress = http://localhost:5252
+
+GET {{IDMetric_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
